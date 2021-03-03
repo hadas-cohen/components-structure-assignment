@@ -1,50 +1,11 @@
 import {ProductCard} from './ProductCard'
+import {useContext} from 'react';
+import {defaultCategory, FilterContext} from "../App";
 
-export function Products(){
-    const products =[
-        {
-            imgUrl: "https://cdn.shopify.com/s/files/1/0938/8938/products/10231100205_1_1315x1800_300_CMYK_1024x1024.jpeg?v=1445623369",
-            name: "Winter Jacket",
-            price: 99.99
-        },{
-            imgUrl: "https://cdn.shopify.com/s/files/1/0938/8938/products/10231100205_1_1315x1800_300_CMYK_1024x1024.jpeg?v=1445623369",
-            name: "Winter Jacket",
-            price: 99.99
-        },{
-            imgUrl: "https://cdn.shopify.com/s/files/1/0938/8938/products/10231100205_1_1315x1800_300_CMYK_1024x1024.jpeg?v=1445623369",
-            name: "Winter Jacket",
-            price: 99.99
-        },{
-            imgUrl: "https://cdn.shopify.com/s/files/1/0938/8938/products/10231100205_1_1315x1800_300_CMYK_1024x1024.jpeg?v=1445623369",
-            name: "Winter Jacket",
-            price: 99.99
-        },{
-            imgUrl: "https://cdn.shopify.com/s/files/1/0938/8938/products/10231100205_1_1315x1800_300_CMYK_1024x1024.jpeg?v=1445623369",
-            name: "Winter Jacket",
-            price: 99.99
-        },{
-            imgUrl: "https://cdn.shopify.com/s/files/1/0938/8938/products/10231100205_1_1315x1800_300_CMYK_1024x1024.jpeg?v=1445623369",
-            name: "Winter Jacket",
-            price: 99.99
-        },{
-            imgUrl: "https://cdn.shopify.com/s/files/1/0938/8938/products/10231100205_1_1315x1800_300_CMYK_1024x1024.jpeg?v=1445623369",
-            name: "Winter Jacket",
-            price: 99.99
-        },{
-            imgUrl: "https://cdn.shopify.com/s/files/1/0938/8938/products/10231100205_1_1315x1800_300_CMYK_1024x1024.jpeg?v=1445623369",
-            name: "Winter Jacket",
-            price: 99.99
-        },{
-            imgUrl: "https://cdn.shopify.com/s/files/1/0938/8938/products/10231100205_1_1315x1800_300_CMYK_1024x1024.jpeg?v=1445623369",
-            name: "Winter Jacket",
-            price: 99.99
-        },{
-            imgUrl: "https://cdn.shopify.com/s/files/1/0938/8938/products/10231100205_1_1315x1800_300_CMYK_1024x1024.jpeg?v=1445623369",
-            name: "Winter Jacket",
-            price: 99.99
-        },
-    ]
+export function Products({products}){
+    const {filter} = useContext(FilterContext);
+    const filtered = products.filter(product => filter === defaultCategory || product.category === filter )
     return (<section class="products">
-        { products.map((product,i) => (<ProductCard key={i} { ...product }/>))}
+        { filtered.map(product => (<ProductCard key={product.id} imgUrl={product.image} name={product.title} price={product.price} />))}
     </section>)
 }
