@@ -1,3 +1,5 @@
+import {Link} from "react-router-dom";
+
 function ProductImage({imgUrl}){
     return <div className="product-image">
         <img
@@ -13,9 +15,11 @@ function ProductInfo({name, price}){
     </div>
 }
 
-export function ProductCard({imgUrl, name, price}){
-    return <div className="product-card">
-        <ProductImage imgUrl={imgUrl}/>
-        <ProductInfo name={name} price={price}/>
+export function ProductCard({id, imgUrl, name, price}){
+    return <div className="product-card" >
+        <Link to= {`/product/${id}`}>ProductDetails
+            <ProductImage imgUrl={imgUrl}/>
+            <ProductInfo name={name} price={price}/>
+        </Link>
     </div>
 }

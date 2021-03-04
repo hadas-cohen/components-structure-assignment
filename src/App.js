@@ -1,41 +1,42 @@
 import './style.css';
-import {Header} from './components/Header'
-import {Products} from './components/Products'
-import {useEffect, useState, createContext} from 'react';
+import 'antd/dist/antd.css';
 
-export const FilterContext = createContext(null)
-export const defaultCategory = '-- all items --'
+// import {Router, Switch, Route, Link} from 'react-router-dom';
+import Home from "./views/Home";
+import ProductDetails from "./views/ProductDetails";
+import { BrowserRouter as Router, Switch, Route} from "react-router-dom";
+import {createContext, useCallback, useEffect, useState} from "react";
 
-function setData(productsList, setProducts, setCategories) {
-    setProducts(productsList)
-    const groupBy = (xs, key) => xs.reduce((rv, x) => {
-        (rv[x[key]] = true);
-        return rv;
-    }, {});
-
-    setCategories([ defaultCategory, ...Object.keys(groupBy(productsList, 'category')) ]);
-}
+export const ProductsContext = createContext([])
 
 function App() {
     const [products, setProducts] = useState([]);
-    const [categories, setCategories] = useState([]);
-    const [filter, setFilter] = useState(defaultCategory);
+
+    const fetchData = useCallback(async () => {
+        const response = await fetch('https://fakestoreapi.com/products');
+        const json = await response.json();
+        setProducts(json)
+    }, [])
 
     useEffect( () => {
-        fetch('https://fakestoreapi.com/products')
-            .then(response => response.json())
-            .then(productsList => {
-                setData(productsList, setProducts, setCategories);
-            })
-    }, []);
+        fetchData();
+    }, [fetchData]);
 
     return (
-        <FilterContext.Provider value={{filter, setFilter}}>
-            <div>
-                <Header categories={categories}/>
-                <Products products={products}/>
-            </div>
-        </FilterContext.Provider>
+        <ProductsContext.Provider value = {products}>
+            <Router>
+                <div>
+                    <Switch>
+                        <Route path="/product/:id">
+                            <ProductDetails />
+                        </Route>
+                        <Route path="/">
+                            <Home />
+                        </Route>
+                    </Switch>
+                </div>
+            </Router>
+        </ProductsContext.Provider>
     );
 }
 
